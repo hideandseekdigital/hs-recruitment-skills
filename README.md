@@ -6,7 +6,7 @@ Three Claude skills for the Hide and Seek Digital / Scout Talent Digital sourcin
 
 | Skill | What it does | What it never does |
 |---|---|---|
-| **loxo-jd-sync** | Finds the position description in SharePoint and adds it to any Loxo job that has no JD or only a few lines. | Overwrite a full JD without asking. Change job titles, locations or owners. |
+| **loxo-jd-sync** | Finds the position description in SharePoint https://hideandseekdigital.sharepoint.com/sites/People/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FPeople%2FShared%20Documents%2F02%20%2D%20Hiring%2F09%20%2D%20ASIC%20Hiring%20Campaign%2FRegistry%20Connect%20%2D%20Delivery%20Partner%28s%29%20%2D%20PCS%2D04808%2F00%20%2D%20Position%20Descriptions&p=true&ga=1 and adds it to any Loxo job that has no JD or only a few lines. | Overwrite a full JD without asking. Change job titles, locations or owners. |
 | **linkedin-recruiter-sourcing** | Searches LinkedIn Recruiter for candidates in Melbourne, Sydney, Canberra and Brisbane and returns a scored list. | Type your password, send InMails, connect or message anyone, or save to projects. |
 | **loxo-candidate-loader** | Checks for duplicates, scores each candidate against the JD, and adds them to the job at Longlist (score 50+) or Shortlist (75+ with likely citizenship, or 85+). | Reject, delete or move anyone out of Shortlist or Screening. Email candidates. |
 
