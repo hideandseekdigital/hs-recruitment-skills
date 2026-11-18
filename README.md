@@ -1,6 +1,6 @@
 # H&S recruitment skills
 
-Three Claude skills for the Hide and Seek Digital / Scout Talent Digital sourcing workflow. They fill in job descriptions in Loxo, search LinkedIn Recruiter, and load scored candidates into Loxo. Setup takes about 10 minutes and only needs doing once.
+Four Claude skills for the Hide and Seek Digital / Scout Talent Digital sourcing workflow. Three do one job each: fill in job descriptions in Loxo, search LinkedIn Recruiter, and load scored candidates into Loxo. The fourth, `loxo-talent-pool-run`, runs the whole workflow across every active Loxo job. Setup takes about 10 minutes and only needs doing once.
 
 ## What each skill does
 
@@ -8,6 +8,7 @@ Three Claude skills for the Hide and Seek Digital / Scout Talent Digital sourcin
 |---|---|---|
 | **loxo-jd-sync** | Finds the position description in SharePoint https://hideandseekdigital.sharepoint.com/sites/People/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FPeople%2FShared%20Documents%2F02%20%2D%20Hiring%2F09%20%2D%20ASIC%20Hiring%20Campaign%2FRegistry%20Connect%20%2D%20Delivery%20Partner%28s%29%20%2D%20PCS%2D04808%2F00%20%2D%20Position%20Descriptions&p=true&ga=1 and adds it to any Loxo job that has no JD or only a few lines. | Overwrite a full JD without asking. Change job titles, locations or owners. |
 | **linkedin-recruiter-sourcing** | Searches LinkedIn Recruiter for candidates in Melbourne, Sydney, Canberra and Brisbane and returns a scored list. | Type your password, send InMails, connect or message anyone, or save to projects. |
+| **loxo-talent-pool-run** | Runs the full workflow across all active Loxo jobs: sources from Loxo Source and LinkedIn Recruiter, removes duplicates, scores, loads to Longlist, promotes to Shortlist, and (when switched on) moves Shortlisted candidates to Outbound for a Loxo campaign. Ends with a report. | Contact candidates directly, or run outreach unless `outreach: on` is asked for and the job has an active Loxo campaign. |
 | **loxo-candidate-loader** | Checks for duplicates, scores each candidate against the JD, and adds them to the job at Longlist (score 50+) or Shortlist (75+ with likely citizenship, or 85+). | Reject, delete or move anyone out of Shortlist or Screening. Email candidates. |
 
 Every candidate Claude adds is tagged `claude-sourced`, owned by the recruiter set in the loader skill, and gets a note in their description such as *Claude score 82/100 · citizenship likely · clearance NV1, followed by a one-line reason*.
@@ -26,15 +27,16 @@ Your organisation owner may have added these skills for everyone. If they alread
 
 ### Claude app (desktop or claude.ai)
 
-1. Download the three zip files from the [`dist`](dist) folder:
+1. Download the four zip files from the [`dist`](dist) folder:
    - `loxo-jd-sync.zip`
    - `linkedin-recruiter-sourcing.zip`
    - `loxo-candidate-loader.zip`
+   - `loxo-talent-pool-run.zip`
 2. In Claude, go to **Customize > Skills**.
 3. Click **+**, then **Create skill**, then **Upload a skill**.
 4. Choose one zip file. Leave it zipped; don't unzip it first.
-5. Repeat steps 3 and 4 for the other two files.
-6. Check that all three are switched **on** in the skills list.
+5. Repeat steps 3 and 4 for the other files.
+6. Check that all four are switched **on** in the skills list.
 
 If the skills don't appear, code execution may be switched off for your account. Ask your organisation owner to check the organisation's skill settings.
 
@@ -76,6 +78,12 @@ You don't need special commands. Ask Claude in plain English and it picks the ri
 Then, once you're happy:
 
 > Looks good. Go live and load them into Loxo.
+
+**Run the whole workflow**
+
+> Do a dry run of the talent pool run across all active Loxo jobs.
+
+> Run the talent pool run live for the Government jobs only.
 
 **Load a list you already have**
 

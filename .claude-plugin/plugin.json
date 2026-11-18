@@ -1,6 +1,8 @@
 {
   "name": "hs-recruitment-skills",
   "version": "1.0.0",
-  "description": "H&S / Scout Talent Digital recruitment automation: Loxo JD sync, LinkedIn Recruiter sourcing and Loxo candidate loading.",
-  "author": { "name": "Hide and Seek Digital" }
+  "description": "H&S / Scout Talent Digital recruitment automation: Loxo talent pool run (end to end), Loxo JD sync, LinkedIn Recruiter sourcing and Loxo candidate loading.",
+  "author": {
+    "name": "Hide and Seek Digital"
+  }
 }

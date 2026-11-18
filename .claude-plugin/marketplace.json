@@ -1,11 +1,13 @@
 {
   "name": "hs-recruitment",
-  "owner": { "name": "Hide and Seek Digital" },
+  "owner": {
+    "name": "Hide and Seek Digital"
+  },
   "plugins": [
     {
       "name": "hs-recruitment-skills",
       "source": "./",
-      "description": "Loxo JD sync, LinkedIn Recruiter sourcing and Loxo candidate loading skills."
+      "description": "Loxo talent pool run (end to end), Loxo JD sync, LinkedIn Recruiter sourcing and Loxo candidate loading."
     }
   ]
 }
