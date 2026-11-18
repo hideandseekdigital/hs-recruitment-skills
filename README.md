@@ -1,32 +1,122 @@
 # H&S recruitment skills
 
-Claude skills for the Hide and Seek Digital / Scout Talent Digital sourcing workflow.
+Three Claude skills for the Hide and Seek Digital / Scout Talent Digital sourcing workflow. They fill in job descriptions in Loxo, search LinkedIn Recruiter, and load scored candidates into Loxo. Setup takes about 10 minutes and only needs doing once.
 
-| Skill | What it does |
-|---|---|
-| `loxo-jd-sync` | Matches SharePoint position descriptions to Loxo jobs and fills empty or thin job descriptions. |
-| `linkedin-recruiter-sourcing` | Read-only LinkedIn Recruiter search for Melbourne, Sydney, Canberra and Brisbane, within LinkedIn's user agreement. Returns a candidate list. |
-| `loxo-candidate-loader` | De-dupes, scores and loads candidates into Loxo at Longlist or Shortlist, with a score note. Dry-run by default. |
+## What each skill does
 
-## Requirements
-- Loxo ATS connector (all three skills or the loader)
-- Microsoft 365 connector with SharePoint access (`loxo-jd-sync`)
-- Claude desktop app built-in browser, signed in to LinkedIn Recruiter by the seat's licensed user (`linkedin-recruiter-sourcing`)
+| Skill | What it does | What it never does |
+|---|---|---|
+| **loxo-jd-sync** | Finds the position description in SharePoint and adds it to any Loxo job that has no JD or only a few lines. | Overwrite a full JD without asking. Change job titles, locations or owners. |
+| **linkedin-recruiter-sourcing** | Searches LinkedIn Recruiter for candidates in Melbourne, Sydney, Canberra and Brisbane and returns a scored list. | Type your password, send InMails, connect or message anyone, or save to projects. |
+| **loxo-candidate-loader** | Checks for duplicates, scores each candidate against the JD, and adds them to the job at Longlist (score 50+) or Shortlist (75+ with likely citizenship, or 85+). | Reject, delete or move anyone out of Shortlist or Screening. Email candidates. |
+
+Every candidate Claude adds is tagged `claude-sourced`, owned by the recruiter set in the loader skill, and gets a note in their description such as *Claude score 82/100 · citizenship likely · clearance NV1, followed by a one-line reason*.
+
+## Before you start
+
+You need:
+
+- **The Claude desktop app** (not just the browser), signed in with your work account. LinkedIn searches run in the app's built-in browser.
+- **Connectors switched on:** Loxo and Microsoft 365. Check in Claude under Customize > Connectors. If either is missing, ask your Claude organisation owner.
+- **Your own LinkedIn Recruiter seat**, signed in on your computer. A seat is licensed to one person, so the LinkedIn skill must run only on the seat holder's computer.
 
 ## Install
 
-**Claude Code (plugin):**
+Your organisation owner may have added these skills for everyone. If they already appear in your skills list, skip this section.
+
+### Claude app (desktop or claude.ai)
+
+1. Download the three zip files from the [`dist`](dist) folder:
+   - `loxo-jd-sync.zip`
+   - `linkedin-recruiter-sourcing.zip`
+   - `loxo-candidate-loader.zip`
+2. In Claude, go to **Customize > Skills**.
+3. Click **+**, then **Create skill**, then **Upload a skill**.
+4. Choose one zip file. Leave it zipped; don't unzip it first.
+5. Repeat steps 3 and 4 for the other two files.
+6. Check that all three are switched **on** in the skills list.
+
+If the skills don't appear, code execution may be switched off for your account. Ask your organisation owner to check the organisation's skill settings.
+
+**For organisation owners:** upload the zips under Organization settings > Skills to provide them to the whole team.
+
+### Claude Code
+
 ```
 /plugin marketplace add hideandseekdigital/hs-recruitment-skills
 /plugin install hs-recruitment-skills@hs-recruitment
 ```
 
-**Claude app (claude.ai):** zip a skill's folder (e.g. `skills/loxo-candidate-loader/`) and upload it under Settings → Capabilities → Skills, or have an org admin add it for the team.
+## Sign in to LinkedIn Recruiter (once per session)
 
-## Guardrails built in
-- Claude never types LinkedIn passwords and stops on LinkedIn's licence-sharing warning.
-- No InMails, connects or messages. Outreach runs through Loxo campaigns only.
-- Loxo writes capped at 150 per run; nobody is rejected, deleted or moved out of Shortlist/Screening.
+1. In the Claude desktop app, open the built-in browser: **Cmd+Shift+B** (Mac) or **Ctrl+Shift+B** (Windows).
+2. Go to linkedin.com/talent/home and sign in yourself. Claude will never type your password, and you shouldn't paste it into the chat.
+3. If LinkedIn shows **"Multiple sessions detected"**, don't let Claude continue. It means the seat is open somewhere else. Close the other session first.
 
-## Note
-These files contain internal Loxo IDs and staff names. Keep the repo private.
+## Using the skills
+
+You don't need special commands. Ask Claude in plain English and it picks the right skill. You can also start a message with the skill name, for example `/loxo-candidate-loader`.
+
+**Always start with a dry run.** Claude scores candidates and shows you the list without changing anything in Loxo. When the list looks right, tell Claude to go live.
+
+### Example requests
+
+**Fill in missing job descriptions**
+
+> Check which active Loxo jobs are missing a JD and fill them from the SharePoint position descriptions.
+
+**Search LinkedIn for one role**
+
+> Search LinkedIn Recruiter for Senior Business Analysts for the [job name] job. Government experience, Canberra first.
+
+**Search, then load into Loxo (dry run first)**
+
+> Find [role] candidates on LinkedIn and Loxo Source, score them against the [job name] job, and show me a dry run.
+
+Then, once you're happy:
+
+> Looks good. Go live and load them into Loxo.
+
+**Load a list you already have**
+
+> Load these people into the [job or talent pool name] job: [paste names, titles, companies, LinkedIn URLs]
+
+### What you'll get back
+
+A report with:
+
+- who went to Shortlist and Longlist, with their score and a one-line reason
+- who was skipped as already in Loxo
+- strong profiles left out only because their location just says "Australia" (worth a quick manual look)
+- LinkedIn candidates with no public profile URL, so you can add it in Loxo
+
+## Limits
+
+- **LinkedIn:** at most 10 searches and 30 candidates per run, with pauses between profiles. This keeps usage in line with LinkedIn's user agreement. For more candidates, run it again later.
+- **Loxo:** at most 150 changes per run, and at most 10 Shortlist additions per job per run.
+- **Locations:** only Melbourne, Sydney, Canberra/ACT and Brisbane (metro areas). Everyone else is left out.
+- **Citizenship:** Claude can't confirm it from a profile. It marks a candidate "likely" only when they have APS/Defence experience or a clearance. Confirm citizenship at screening.
+
+## Outreach
+
+The skills don't contact candidates. Outreach runs through Loxo campaigns linked to the Outbound stage. Until those are set up, contact Shortlisted candidates the usual way.
+
+## If something goes wrong
+
+| You see | Do this |
+|---|---|
+| Claude says it hit a LinkedIn sign-in page | Sign in yourself in the built-in browser, then tell Claude to continue. |
+| "Multiple sessions detected" on LinkedIn | Stop. Close the other LinkedIn session, then start a new run. |
+| "Something went wrong" on LinkedIn twice | Claude stops LinkedIn for that run. Try again later. |
+| A job is reported as "needs a JD" | Ask Claude to run loxo-jd-sync, or add the JD in Loxo yourself. |
+| A wrong person was added | Remove them in Loxo as usual and raise it with the skill owner so the skill can be adjusted. |
+
+## Changing the skills
+
+Edit the `SKILL.md` files under `skills/`, then rebuild the zips in `dist/` before sharing:
+
+```
+cd skills && for s in */; do s=${s%/}; rm -f ../dist/$s.zip; zip -qr ../dist/$s.zip $s; done
+```
+
+These files contain internal Loxo IDs and staff names. Keep this repo private.
